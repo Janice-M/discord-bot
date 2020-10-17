@@ -1,5 +1,5 @@
-use std::env;
 use discord_bot::generate_random_name;
+use std::env;
 
 use serenity::{
     async_trait,
@@ -24,6 +24,19 @@ impl EventHandler for Handler {
             }
         }
 
+        if msg.content == "!gh" {
+            if let Err(why) = msg
+                .channel_id
+                .say(
+                    &ctx.http,
+                    "Fork me on github: https://github.com/collinsmuriuki/discord-bot",
+                )
+                .await
+            {
+                println!("Error sending message: {:?}", why);
+            }
+        }
+
         if msg.content == "!slide" {
             let dm = msg
                 .author
@@ -38,8 +51,6 @@ impl EventHandler for Handler {
                 println!("Error when direct messaging user: {:?}", why);
             }
         }
-        
-
     }
 
     async fn ready(&self, _: Context, ready: Ready) {
