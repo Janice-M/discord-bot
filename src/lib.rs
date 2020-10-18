@@ -161,3 +161,16 @@ pub fn generate_random_name() -> String {
 
     format!("You are from now on...{}", value)
 }
+
+pub fn parse_r6_args(message: &str) -> Option<(&str, &str)> {
+    for (i, c) in message.chars().enumerate() {
+        if c == ' ' {
+            return Some((&message[..i], &message[i+1..]));
+        }
+    }
+    None
+}
+
+pub fn get_r6_stats(platform: &str, username: &str) -> String {
+    unimplemented!()
+}
