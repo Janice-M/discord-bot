@@ -1,4 +1,4 @@
-use rand::{self, Rng};
+use rand::seq::SliceRandom;
 
 pub fn generate_random_name() -> String {
     let names = [
@@ -142,30 +142,17 @@ pub fn generate_random_name() -> String {
         "Woolysocks",
     ];
 
-    let mut rng = rand::thread_rng();
-    let mut value = String::new();
-
-    for (i, v) in names.iter().enumerate() {
-        if i == rng.gen_range(1, names.len()) {
-            value.push_str(*v);
-            break;
-        }
-    }
-
-    for (i, v) in last.iter().enumerate() {
-        if i == rng.gen_range(1, last.len()) {
-            value.push_str(*v);
-            break;
-        }
-    }
-
-    format!("You are from now on...{}", value)
+    format!(
+        "You are from now on...\n{} {}",
+        names.choose(&mut rand::thread_rng()).unwrap(),
+        last.choose(&mut rand::thread_rng()).unwrap()
+    )
 }
 
 pub fn parse_r6_args(message: &str) -> Option<(&str, &str)> {
     for (i, c) in message.chars().enumerate() {
         if c == ' ' {
-            return Some((&message[..i], &message[i+1..]));
+            return Some((&message[..i], &message[i + 1..]));
         }
     }
     None
