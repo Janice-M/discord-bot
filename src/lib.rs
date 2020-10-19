@@ -142,10 +142,12 @@ pub fn generate_random_name() -> String {
         "Woolysocks",
     ];
 
+    let mut rng = rand::thread_rng();
+
     format!(
         "You are from now on...\n{} {}",
-        names.choose(&mut rand::thread_rng()).unwrap(),
-        last.choose(&mut rand::thread_rng()).unwrap()
+        names.choose(&mut rng).unwrap(),
+        last.choose(&mut rng).unwrap()
     )
 }
 
