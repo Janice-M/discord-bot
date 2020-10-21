@@ -1,4 +1,4 @@
-use discord_bot::generate_random_name;
+use discord_bot::{generate_random_alias, get_r6_stats, parse_r6_args};
 use std::env;
 
 use serenity::{
@@ -19,7 +19,7 @@ impl EventHandler for Handler {
         }
 
         if msg.content == "!alias" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, generate_random_name()).await {
+            if let Err(why) = msg.channel_id.say(&ctx.http, generate_random_alias()).await {
                 println!("Error sending message: {:?}", why);
             }
         }
@@ -49,6 +49,24 @@ impl EventHandler for Handler {
 
             if let Err(why) = dm {
                 println!("Error when direct messaging user: {:?}", why);
+            }
+        }
+
+        if msg.content.starts_with("!r6") {
+            if let Some((_, username)) = parse_r6_args(&msg.content) {
+                let ((_username, _platform)) = parse_r6_args(username).unwrap_or(("thiself", "pc"));
+                unimplemented!()
+            } else {
+                if let Err(why) = msg
+                    .channel_id
+                    .say(
+                        &ctx.http,
+                        "Make sure you specify the username then the platform to get stats!",
+                    )
+                    .await
+                {
+                    println!("Error sending message: {:?}", why);
+                }
             }
         }
     }

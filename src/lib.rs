@@ -1,6 +1,12 @@
 use rand::seq::SliceRandom;
 
-pub fn generate_random_name() -> String {
+/// Generates a random name from a list of 69 random first and last
+/// nicknames through a `rng`
+///
+/// Requires the `SliceRandom` trait from `rand`
+///
+/// Name returned as a `String`
+pub fn generate_random_alias() -> String {
     let names = [
         "Baby Oil",
         "Bad News",
@@ -160,6 +166,6 @@ pub fn parse_r6_args(message: &str) -> Option<(&str, &str)> {
     None
 }
 
-pub fn get_r6_stats(platform: &str, username: &str) -> String {
+pub fn get_r6_stats(_platform: &str, _username: &str) -> String {
     unimplemented!()
 }
