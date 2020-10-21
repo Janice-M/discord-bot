@@ -157,7 +157,7 @@ pub fn generate_random_alias() -> String {
     )
 }
 
-pub fn parse_r6_args(message: &str) -> Option<(&str, &str)> {
+pub fn parse_args(message: &str) -> Option<(&str, &str)> {
     for (i, c) in message.chars().enumerate() {
         if c == ' ' {
             return Some((&message[..i], &message[i + 1..]));

@@ -1,6 +1,8 @@
-use discord_bot::{generate_random_alias, get_r6_stats, parse_r6_args};
+use discord_bot::{generate_random_alias, get_r6_stats, parse_args};
 use std::env;
 
+use qrcode::render::unicode;
+use qrcode::QrCode;
 use serenity::{
     async_trait,
     model::{channel::Message, gateway::Ready},
@@ -53,16 +55,49 @@ impl EventHandler for Handler {
         }
 
         if msg.content.starts_with("!r6") {
-            if let Some((_, username)) = parse_r6_args(&msg.content) {
-                let ((_username, _platform)) = parse_r6_args(username).unwrap_or(("thiself", "pc"));
-                unimplemented!()
-            } else {
-                if let Err(why) = msg
+            match parse_args(&msg.content) {
+                Some((_, username)) => {
+                    let ((username, platform)) = parse_args(username).unwrap_or(("thiself", "pc"));
+                    // TODO implement get_r6_stats
+                    let _stats = get_r6_stats(platform, username);
+                    if let Err(why) = msg.channel_id.say(&ctx.http, "Coming soon...").await {
+                        println!("Error sending message: {:?}", why);
+                    }
+                }
+                None => {
+                    if let Err(why) = msg
                     .channel_id
                     .say(
                         &ctx.http,
-                        "Make sure you specify the username then the platform to get stats!",
+                        "Make sure you specify the `username` then the `platform` to get stats!",
                     )
+                    .await
+                {
+                    println!("Error sending message: {:?}", why);
+                }
+                }
+            }
+        }
+
+        if msg.content.starts_with("!qr") {
+            if let Some((_, content)) = parse_args(&msg.content) {
+                let code = QrCode::new(content.as_bytes()).unwrap();
+                let image = code
+                    .render::<unicode::Dense1x2>()
+                    .dark_color(unicode::Dense1x2::Light)
+                    .light_color(unicode::Dense1x2::Dark)
+                    .build();
+                if let Err(why) = msg
+                    .channel_id
+                    .say(&ctx.http, format!("Here you go...\n```{}```", image))
+                    .await
+                {
+                    println!("Error sending message: {:?}", why);
+                }
+            } else {
+                if let Err(why) = msg
+                    .channel_id
+                    .say(&ctx.http, "I'll need more than that!")
                     .await
                 {
                     println!("Error sending message: {:?}", why);
