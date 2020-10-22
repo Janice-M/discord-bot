@@ -20,6 +20,23 @@ impl EventHandler for Handler {
             }
         }
 
+        if msg.content.contains("help") || msg.content == "!help" {
+            if let Err(why) = msg.channel_id.say(&ctx.http, format!("```md\n
+            **basic commands**
+            !ping -> For testing functionality, bot will reply 'Pong!'
+            
+            !gh -> Bot replies with the github repository url
+            
+            !alias -> Bot replies with a random alias
+            
+            !qr <content> -> Bot encodes `content` to a qr code. Why? Just for fun lol.
+            
+            !r6 <username> <platform> -> Bot fetches Rainbow Six Siege server stats for a given user and posts them as a response (UNIMPLEMENTED: Looking for a good R6 Stats API, any leads welcome)
+            ```")).await {
+                println!("Error sending message: {:?}", why);
+            }
+        }
+
         if msg.content == "!alias" {
             if let Err(why) = msg.channel_id.say(&ctx.http, generate_random_alias()).await {
                 println!("Error sending message: {:?}", why);
