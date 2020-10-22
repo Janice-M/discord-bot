@@ -15,6 +15,7 @@
 ```
 
 ## Usage
+Requires a `DISCORD_TOKEN` to be set as an environmental variable.
 
 ```sh
 cargo run
