@@ -22,7 +22,7 @@ impl EventHandler for Handler {
 
         if msg.content == "!help" {
             if let Err(why) = msg.channel_id.say(&ctx.http, format!("```markdown\n
-**basic commands**
+**basic commands**\n
 !ping -> For testing functionality, bot will reply 'Pong!'
 
 !gh -> Bot replies with the github repository url
@@ -32,7 +32,9 @@ impl EventHandler for Handler {
 !qr <content> -> Bot encodes `content` to a qr code. Why? Just for fun lol.
 
 !r6 <username> <platform> -> Bot fetches Rainbow Six Siege server stats for a given user and posts them as a response (UNIMPLEMENTED: Looking for a good R6 Stats API, any leads welcome)
-            ```")).await {
+            ```
+Fork me on GitHub: https://github.com/collinsmuriuki/discord-bot
+            ")).await {
                 println!("Error sending message: {:?}", why);
             }
         }
