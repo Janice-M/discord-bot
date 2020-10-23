@@ -20,7 +20,7 @@ impl EventHandler for Handler {
             }
         }
 
-        if msg.content.contains("help") || msg.content == "!help" {
+        if msg.content == "!help" {
             if let Err(why) = msg.channel_id.say(&ctx.http, format!("```markdown\n
 **basic commands**
 !ping -> For testing functionality, bot will reply 'Pong!'
